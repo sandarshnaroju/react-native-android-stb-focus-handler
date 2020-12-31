@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, View, StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {FocusableItem} from '../redux-focus/FocusableItem';
 
 export default function Screen(props) {

@@ -38,8 +38,14 @@ export function FocusableItem(Component) {
   };
 
   const deepCompare = (prevProps, nextProps) => {
-    if (isEqual(prevProps, nextProps)) {
-      return false;
+    console.log('cool');
+    if (
+      isEqual(
+        prevProps.allScreensState.allScreensArray,
+        nextProps.allScreensState.allScreensArray,
+      )
+    ) {
+      return true;
     }
     return false;
   };
@@ -51,6 +57,7 @@ export function FocusableItem(Component) {
     React.memo(function (props) {
       let isFocused = false;
       const elementRef = useRef(null);
+
       useEffect(() => {
         let timeout = null;
         if (elementRef.current != null) {
@@ -71,15 +78,9 @@ export function FocusableItem(Component) {
         };
       }, []);
 
-      if (
-        props.allScreensState.allScreensArray.length > 0 &&
-        props.focusId ==
-          props.allScreensState.allScreensArray[
-            props.allScreensState.allScreensArray.length - 1
-          ].currentFocusId
-      ) {
-        isFocused = true;
+      useEffect(() => {
         if (
+          isFocused &&
           props.allScreensState.allScreensArray.length > 0 &&
           props.focusId ==
             props.allScreensState.allScreensArray[
@@ -88,8 +89,16 @@ export function FocusableItem(Component) {
         ) {
           props.onPress();
         }
+      }, [props.allScreensState.allScreensArray]);
+      if (
+        props.allScreensState.allScreensArray.length > 0 &&
+        props.focusId ==
+          props.allScreensState.allScreensArray[
+            props.allScreensState.allScreensArray.length - 1
+          ].currentFocusId
+      ) {
+        isFocused = true;
       }
-
       const onPress = () => {
         props.setCurrentFocus(props.focusId);
         props.onPress();

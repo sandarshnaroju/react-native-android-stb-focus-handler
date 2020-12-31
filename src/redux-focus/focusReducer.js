@@ -35,6 +35,7 @@ export const allScreensFocusReducer = (
       const deScreen = state.allScreensArray.find(
         (obj) => obj.currentScreen == action.screen,
       );
+
       const remainingFocusMaps = deScreen.focusMap.filter(
         (obj) => Object.keys(obj)[0] != action.focusId,
       );
@@ -43,20 +44,23 @@ export const allScreensFocusReducer = (
         deScreen.focusMap = cloneDeep(remainingFocusMaps);
         mergeScreen = [...remScreens, deScreen];
       } else {
-        mergeScreen = [...remScreens];
+        mergeScreen = remScreens;
       }
-      console.log(mergeScreen);
       return {
         allScreensArray: mergeScreen,
       };
 
     case 'REGISTERING_ALL_SCREENS':
-      const remainingScreens = state.allScreensArray.filter(
+      let remainingScreens = state.allScreensArray.filter(
         (obj) => obj.currentScreen != action.screen,
       );
       const screen = state.allScreensArray.find(
         (obj) => obj.currentScreen == action.screen,
       );
+
+      if (screen == null && remainingScreens.length > 0) {
+        remainingScreens[remainingScreens.length - 1]['pressed'] = false;
+      }
       const singleScreen = screenReducer(
         screen != null ? screen : SCREEN_INITIAL_STATE,
         setScreenDetails(
@@ -67,7 +71,6 @@ export const allScreensFocusReducer = (
         ),
       );
       const mergeInNewScreen = [...remainingScreens, singleScreen];
-      console.log(mergeInNewScreen);
       return {
         allScreensArray: mergeInNewScreen,
       };
@@ -79,7 +82,6 @@ export const allScreensFocusReducer = (
       );
 
       const result = [...state.allScreensArray, updatedWithDirection];
-      console.log(result);
       return {
         allScreensArray: result,
       };
@@ -90,7 +92,7 @@ export const allScreensFocusReducer = (
         setFocus(action.focusId),
       );
       return {
-        allScreensArray: [updatedSetFocus],
+        allScreensArray: [...state.allScreensArray, updatedSetFocus],
       };
 
     default:
