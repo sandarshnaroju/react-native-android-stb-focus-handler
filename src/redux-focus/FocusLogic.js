@@ -9,29 +9,30 @@ import {
 export function findNearestElements(x, y, focusMap, direction) {
   let elementMap = {};
   if (focusMap != null) {
-    Object.keys(focusMap).forEach((focusId, index) => {
-      const pos = focusMap[focusId];
+    focusMap.forEach((focusObj) => {
+      const key = Object.keys(focusObj)[0];
+      const pos = Object.values(focusObj)[0];
       switch (direction) {
         case KEYCODE_DPAD_CENTER:
           break;
         case KEYCODE_DPAD_LEFT:
           if (x > parseFloat(pos.split(':')[0])) {
-            elementMap[focusId] = pos;
+            elementMap[key] = pos;
           }
           break;
         case KEYCODE_DPAD_RIGHT:
           if (x < parseFloat(pos.split(':')[0])) {
-            elementMap[focusId] = pos;
+            elementMap[key] = pos;
           }
           break;
         case KEYCODE_DPAD_UP:
           if (y > parseFloat(pos.split(':')[1])) {
-            elementMap[focusId] = pos;
+            elementMap[key] = pos;
           }
           break;
         case KEYCODE_DPAD_DOWN:
           if (y < parseFloat(pos.split(':')[1])) {
-            elementMap[focusId] = pos;
+            elementMap[key] = pos;
           }
           break;
         default:
@@ -67,8 +68,14 @@ export function findNextFocusId(x, y, elementsMap) {
 }
 
 export function findNextFocusElement(currentFocusId, focusMap, direction) {
-  const currentFocusPos = focusMap[currentFocusId];
-  const currentFocusPosValues = currentFocusPos.split(':');
+  const currentFocusPos = focusMap.find((obj) => {
+    if (Object.keys(obj)[0] === currentFocusId) {
+      return true;
+    }
+  });
+
+  const currentFocusPosValues = currentFocusPos[currentFocusId].split(':');
+
   const currentFocusPosX = parseFloat(currentFocusPosValues[0]);
   const currentFocusPosY = parseFloat(currentFocusPosValues[1]);
   const nearElements = findNearestElements(

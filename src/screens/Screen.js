@@ -9,7 +9,7 @@ export default function Screen(props) {
       <View style={styles.innerViewStyle}>
         <Focusable
           focusId={'item-1'}
-          focus={false}
+          focus={true}
           style={{backgroundColor: 'red', height: 60, width: 80}}
           onPress={() => {
             console.log('item1 pressed');
@@ -20,7 +20,7 @@ export default function Screen(props) {
 
         <Focusable
           focusId={'item-2'}
-          focus={true}
+          focus={false}
           style={{backgroundColor: 'red', height: 60, width: 80}}
           onPress={() => {
             console.log('item2 pressed');
@@ -40,15 +40,16 @@ export default function Screen(props) {
           {' '}
           text 3{' '}
         </Focusable>
-        <Focusable
+        {/* <Focusable
           focusId={'item-4'}
+          focus={false}
           style={{backgroundColor: 'red', height: 60, width: 80}}
           onPress={() => {
             console.log('item4 pressed');
           }}>
           {' '}
           text 4{' '}
-        </Focusable>
+        </Focusable> */}
       </View>
     </View>
   );

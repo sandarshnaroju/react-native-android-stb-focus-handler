@@ -7,7 +7,8 @@ import KeyEvent, {
   KEYCODE_DPAD_UP,
 } from 'react-native-keyevent';
 import {connect} from 'react-redux';
-import {setFocusDirection} from './Actions';
+import {setFocusDirection, allScreensFocusDirection} from './Actions';
+import store from '../store';
 
 function NativeKeyEvent(props) {
   useEffect(() => {
@@ -38,7 +39,9 @@ function NativeKeyEvent(props) {
 }
 const dispatchDirection = (direc) => {
   return (dispatch) => {
-    dispatch(setFocusDirection(direc));
+    // const {curState} = store.getState();
+    // console.log(curState);
+    dispatch(allScreensFocusDirection(direc));
   };
 };
 

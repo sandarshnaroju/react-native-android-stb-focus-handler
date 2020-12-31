@@ -1,66 +1,92 @@
 import React, {useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
-import {registerFocus, setFocus} from './Actions';
+import {allScreensDetails, allScreenSetFocus} from './Actions';
+import isEqual from 'lodash/isEqual';
+
 export function FocusableItem(Component) {
-  const dispatchFocus = (name, position) => {
+  const dispatchFocus = (name, position, isFocus) => {
     return (dispatch) => {
-      dispatch(registerFocus(name, position));
+      dispatch(allScreensDetails(name, position, isFocus));
     };
   };
+
   const setCurrentFocus = (focusId) => {
     return (dispatch) => {
-      dispatch(setFocus(focusId));
+      dispatch(allScreenSetFocus(focusId));
     };
   };
+
   const mapDispatchToProps = {
     dispatchFocus,
     setCurrentFocus,
   };
+
   const mapStateToProps = (state) => {
-    const {focusState} = state;
-    return {focusState};
+    const {allScreensState} = state;
+    return {allScreensState};
   };
+
+  const deepCompare = (prevProps, nextProps) => {
+    if (isEqual(prevProps, nextProps)) {
+      return false;
+    }
+    return false;
+  };
+
   return connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(function (props) {
-    let isFocused = false;
-    const elementRef = useRef(null);
-    useEffect(() => {
-      let timeout = null;
-      if (elementRef.current != null) {
-        timeout = setTimeout(() => {
-          elementRef.current.measure((fx, fy, width, height, px, py) => {
-            props.dispatchFocus(props.focusId, px + ':' + py);
-            if (props.focus) {
-              props.setCurrentFocus(props.focusId);
-            }
-          });
-        }, 0);
+  )(
+    React.memo(function (props) {
+      let isFocused = false;
+      const elementRef = useRef(null);
+      useEffect(() => {
+        let timeout = null;
+        if (elementRef.current != null) {
+          timeout = setTimeout(() => {
+            elementRef.current.measure((fx, fy, width, height, px, py) => {
+              console.log('registering ', props.focusId);
+              props.dispatchFocus(props.focusId, px + ':' + py, props.focus);
+            });
+          }, 0);
+        }
+        return () => {
+          clearTimeout(timeout);
+        };
+      }, []);
+      console.log('rendered', props.focusId);
+      if (
+        props.allScreensState.allScreensArray.length > 0 &&
+        props.focusId ==
+          props.allScreensState.allScreensArray[
+            props.allScreensState.allScreensArray.length - 1
+          ].currentFocusId
+      ) {
+        isFocused = true;
+        if (
+          props.allScreensState.allScreensArray.length > 0 &&
+          props.focusId ==
+            props.allScreensState.allScreensArray[
+              props.allScreensState.allScreensArray.length - 1
+            ].pressed
+        ) {
+          props.onPress();
+        }
       }
-      return () => {
-        clearTimeout(timeout);
-      };
-    }, []);
 
-    if (props.focusId == props.focusState.currentFocus) {
-      isFocused = true;
-      if (props.focusState.pressed) {
+      const onPress = () => {
+        props.setCurrentFocus(props.focusId);
         props.onPress();
-      }
-    }
+      };
 
-    const onPress = () => {
-      props.setCurrentFocus(props.focusId);
-    };
-
-    return (
-      <Component
-        {...props}
-        onPress={onPress}
-        style={{...props.style, backgroundColor: isFocused ? 'blue' : 'red'}}
-        ref={elementRef}
-      />
-    );
-  });
+      return (
+        <Component
+          {...props}
+          onPress={onPress}
+          style={{...props.style, backgroundColor: isFocused ? 'blue' : 'red'}}
+          ref={elementRef}
+        />
+      );
+    }, deepCompare),
+  );
 }
