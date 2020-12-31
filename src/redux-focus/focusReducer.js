@@ -4,7 +4,7 @@ import {
   setFocusDirection,
   setMapsDetails,
   setScreenDetails,
-} from './Actions';
+} from './FocusActions';
 import {findNextFocusElement} from './FocusLogic';
 
 import cloneDeep from 'lodash/cloneDeep';

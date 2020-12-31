@@ -1,10 +1,3 @@
-export const registerFocus = (screen, focusId, pos, isFocus) => ({
-  type: 'REGISTER_FOCUS',
-  focusId: focusId,
-  position: pos,
-  isFocus: isFocus,
-  screen: screen,
-});
 export const setFocusDirection = (direction) => ({
   type: 'FOCUS_DIRECTION',
   direction: direction,
@@ -42,7 +35,6 @@ export const deRegisterDetails = (screen, focusId) => ({
 export const allScreensFocusDirection = (direction) => ({
   type: 'FOCUS_DIRECTION_IN_SCREEN',
   direction: direction,
-  // curState: state,
 });
 export const allScreenSetFocus = (focusId) => ({
   type: 'SET_SELECTIVE_FOCUS',

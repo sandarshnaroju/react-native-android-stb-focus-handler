@@ -4,7 +4,7 @@ import {
   allScreensDetails,
   allScreenSetFocus,
   deRegisterDetails,
-} from './Actions';
+} from './FocusActions';
 import isEqual from 'lodash/isEqual';
 
 export function FocusableItem(Component) {
@@ -38,7 +38,6 @@ export function FocusableItem(Component) {
   };
 
   const deepCompare = (prevProps, nextProps) => {
-    console.log('cool');
     if (
       isEqual(
         prevProps.allScreensState.allScreensArray,

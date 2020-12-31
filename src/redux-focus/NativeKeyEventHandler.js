@@ -7,7 +7,7 @@ import KeyEvent, {
   KEYCODE_DPAD_UP,
 } from 'react-native-keyevent';
 import {connect} from 'react-redux';
-import {setFocusDirection, allScreensFocusDirection} from './Actions';
+import {allScreensFocusDirection} from './FocusActions';
 function NativeKeyEvent(props) {
   useEffect(() => {
     KeyEvent.onKeyUpListener((keyEvent) => {
@@ -28,7 +28,6 @@ function NativeKeyEvent(props) {
           props.dispatchDirection(KEYCODE_DPAD_DOWN);
           break;
         default:
-          console.log('fehaitl');
           break;
       }
     });
