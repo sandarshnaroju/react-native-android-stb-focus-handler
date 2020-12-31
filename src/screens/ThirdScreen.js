@@ -1,63 +1,59 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, View, StyleSheet, Text} from 'react-native';
 import {FocusableItem} from '../redux-focus/FocusableItem';
 
-export default function Screen(props) {
+export default function SecondScreen(props) {
   const Focusable = FocusableItem(Text);
   return (
     <View style={{flex: 1}}>
       <View style={styles.innerViewStyle}>
         <Focusable
-          focusId={'item-1'}
-          screen={'screen-1'}
+          focusId={'item-9'}
+          screen={'screen-3'}
           focus={true}
           style={{backgroundColor: 'red', height: 60, width: 80}}
           onPress={() => {
-            console.log('item1 pressed');
-            props.navigation.push('secondscreen');
+            console.log('item9 pressed');
           }}>
           {' '}
-          text 1{' '}
+          text 9{' '}
         </Focusable>
 
         <Focusable
-          focusId={'item-2'}
-          screen={'screen-1'}
+          focusId={'item-10'}
+          screen={'screen-3'}
           focus={false}
           style={{backgroundColor: 'red', height: 60, width: 80}}
           onPress={() => {
-            console.log('item2 pressed');
-            props.navigation.push('secondscreen');
+            console.log('item10 pressed');
           }}>
           {' '}
-          text 2{' '}
+          text 10{' '}
         </Focusable>
       </View>
       <View style={styles.innerViewStyle}>
         <Focusable
-          focusId={'item-3'}
-          screen={'screen-1'}
+          focusId={'item-11'}
+          screen={'screen-3'}
           focus={true}
           style={{backgroundColor: 'red', height: 60, width: 80}}
           onPress={() => {
-            console.log('item3 pressed');
-            props.navigation.push('secondscreen');
+            console.log('item11 pressed');
           }}>
           {' '}
-          text 3{' '}
+          text 11{' '}
         </Focusable>
-        {/* <Focusable
-          focusId={'item-4'}
-          screen={'screen-1'}
+        <Focusable
+          focusId={'item-12'}
+          screen={'screen-3'}
           focus={false}
           style={{backgroundColor: 'red', height: 60, width: 80}}
           onPress={() => {
-            console.log('item4 pressed');
-            props.navigation.push('secondscreen');
+            console.log('item12 pressed');
           }}>
           {' '}
-          text 4{' '}
-        </Focusable> */}
+          text 12{' '}
+        </Focusable>
       </View>
     </View>
   );

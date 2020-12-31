@@ -14,6 +14,7 @@ export default function SecondScreen(props) {
           style={{backgroundColor: 'red', height: 60, width: 80}}
           onPress={() => {
             console.log('item5 pressed');
+            props.navigation.push('thirdscreen');
           }}>
           {' '}
           text 5{' '}

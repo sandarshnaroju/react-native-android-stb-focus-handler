@@ -6,9 +6,11 @@ import {
   setScreenDetails,
 } from './FocusActions';
 import {findNextFocusElement} from './FocusLogic';
+import {Dimensions} from 'react-native';
 
 import cloneDeep from 'lodash/cloneDeep';
-
+const HEIGHT = Dimensions.get('window').height;
+const WIDTH = Dimensions.get('window').width;
 const ALL_SCREENS_INITIAL_STATE = {
   allScreensArray: [],
 };
@@ -136,6 +138,8 @@ export const screenReducer = (state = SCREEN_INITIAL_STATE, action) => {
             state.currentFocusId,
             state.focusMap,
             action.direction,
+            WIDTH,
+            HEIGHT,
           );
           return {
             ...state,

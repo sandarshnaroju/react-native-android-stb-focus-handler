@@ -62,10 +62,12 @@ export function FocusableItem(Component) {
         if (elementRef.current != null) {
           timeout = setTimeout(() => {
             elementRef.current.measure((fx, fy, width, height, px, py) => {
+              const midX = px + width / 2;
+              const midY = py + height / 2;
               props.registerFocus(
                 props.screen,
                 props.focusId,
-                px + ':' + py,
+                midX + ':' + midY,
                 props.focus,
               );
             });
