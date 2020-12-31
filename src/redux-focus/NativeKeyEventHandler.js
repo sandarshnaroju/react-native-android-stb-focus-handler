@@ -8,8 +8,6 @@ import KeyEvent, {
 } from 'react-native-keyevent';
 import {connect} from 'react-redux';
 import {setFocusDirection, allScreensFocusDirection} from './Actions';
-import store from '../store';
-
 function NativeKeyEvent(props) {
   useEffect(() => {
     KeyEvent.onKeyUpListener((keyEvent) => {
@@ -39,8 +37,6 @@ function NativeKeyEvent(props) {
 }
 const dispatchDirection = (direc) => {
   return (dispatch) => {
-    // const {curState} = store.getState();
-    // console.log(curState);
     dispatch(allScreensFocusDirection(direc));
   };
 };

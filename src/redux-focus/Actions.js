@@ -1,8 +1,9 @@
-export const registerFocus = (focusId, pos, isFocus) => ({
+export const registerFocus = (screen, focusId, pos, isFocus) => ({
   type: 'REGISTER_FOCUS',
   focusId: focusId,
   position: pos,
   isFocus: isFocus,
+  screen: screen,
 });
 export const setFocusDirection = (direction) => ({
   type: 'FOCUS_DIRECTION',
@@ -12,22 +13,32 @@ export const setFocus = (focusId) => ({
   type: 'SET_FOCUS',
   focusId: focusId,
 });
-export const setComponentDetails = (focusId, pos) => ({
+export const setMapsDetails = (focusId, pos) => ({
   type: 'SET_COMPONENT_DETAILS',
   focusId: focusId,
   position: pos,
 });
-export const setScreenDetails = (elementsObj, focusId) => ({
+export const setScreenDetails = (screen, focusId, pos, isFocus) => ({
   type: 'SET_SCREEN_DETAILS',
-  elementsObj: elementsObj,
+  position: pos,
   focusId: focusId,
+  screen: screen,
+  isFocus: isFocus,
 });
-export const allScreensDetails = (focusId, pos, isFocus) => ({
+export const allScreensDetails = (screen, focusId, pos, isFocus) => ({
   type: 'REGISTERING_ALL_SCREENS',
   focusId: focusId,
   position: pos,
   isFocus: isFocus,
+  screen: screen,
 });
+
+export const deRegisterDetails = (screen, focusId) => ({
+  type: 'DEREGISTERING_ALL_SCREENS',
+  focusId: focusId,
+  screen: screen,
+});
+
 export const allScreensFocusDirection = (direction) => ({
   type: 'FOCUS_DIRECTION_IN_SCREEN',
   direction: direction,

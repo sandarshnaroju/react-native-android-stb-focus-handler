@@ -1,14 +1,12 @@
 import {combineReducers, createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import {
-  focusReducer,
-  innerReducer,
+  mapsReducer,
   screenReducer,
   allScreensFocusReducer,
 } from './redux-focus/focusReducer';
 const reducers = combineReducers({
-  focusState: focusReducer,
-  innerFocusState: innerReducer,
+  mapsState: mapsReducer,
   screenState: screenReducer,
   allScreensState: allScreensFocusReducer,
 });

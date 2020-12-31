@@ -1,12 +1,22 @@
 import React, {useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
-import {allScreensDetails, allScreenSetFocus} from './Actions';
+import {
+  allScreensDetails,
+  allScreenSetFocus,
+  deRegisterDetails,
+} from './Actions';
 import isEqual from 'lodash/isEqual';
 
 export function FocusableItem(Component) {
-  const dispatchFocus = (name, position, isFocus) => {
+  const deregisterFocus = (screen, name) => {
     return (dispatch) => {
-      dispatch(allScreensDetails(name, position, isFocus));
+      dispatch(deRegisterDetails(screen, name));
+    };
+  };
+
+  const registerFocus = (screen, name, position, isFocus) => {
+    return (dispatch) => {
+      dispatch(allScreensDetails(screen, name, position, isFocus));
     };
   };
 
@@ -17,8 +27,9 @@ export function FocusableItem(Component) {
   };
 
   const mapDispatchToProps = {
-    dispatchFocus,
+    registerFocus,
     setCurrentFocus,
+    deregisterFocus,
   };
 
   const mapStateToProps = (state) => {
@@ -45,16 +56,21 @@ export function FocusableItem(Component) {
         if (elementRef.current != null) {
           timeout = setTimeout(() => {
             elementRef.current.measure((fx, fy, width, height, px, py) => {
-              console.log('registering ', props.focusId);
-              props.dispatchFocus(props.focusId, px + ':' + py, props.focus);
+              props.registerFocus(
+                props.screen,
+                props.focusId,
+                px + ':' + py,
+                props.focus,
+              );
             });
           }, 0);
         }
         return () => {
           clearTimeout(timeout);
+          props.deregisterFocus(props.screen, props.focusId);
         };
       }, []);
-      console.log('rendered', props.focusId);
+
       if (
         props.allScreensState.allScreensArray.length > 0 &&
         props.focusId ==
