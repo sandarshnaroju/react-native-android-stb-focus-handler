@@ -1,8 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {FocusableItem} from '../redux-focus/FocusableItem';
-
+import {GetKeyEventProvider} from '../redux-focus/KeyEventProvider';
 export default function Screen(props) {
+  const keyEvent = GetKeyEventProvider();
   const Focusable = FocusableItem(Text);
   return (
     <View style={{flex: 1}}>
@@ -41,23 +42,24 @@ export default function Screen(props) {
           style={{backgroundColor: 'red', height: 60, width: 80}}
           onPress={() => {
             console.log('item3 pressed');
-            props.navigation.push('secondscreen');
+            keyEvent.setDisable(true);
           }}>
           {' '}
           text 3{' '}
         </Focusable>
-        {/* <Focusable
+
+        <Focusable
           focusId={'item-4'}
           screen={'screen-1'}
           focus={false}
           style={{backgroundColor: 'red', height: 60, width: 80}}
           onPress={() => {
             console.log('item4 pressed');
-            props.navigation.push('secondscreen');
+            keyEvent.setDisable(false);
           }}>
           {' '}
           text 4{' '}
-        </Focusable> */}
+        </Focusable>
       </View>
     </View>
   );
