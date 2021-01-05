@@ -1,13 +1,18 @@
 import React from 'react';
 import {Button, View, StyleSheet, Text} from 'react-native';
 import {FocusableItem} from '../redux-focus/FocusableItem';
-
+const TYPE = {
+  BUTTON: 'button',
+  H_LIST: 'horizontal flatlist',
+  V_LIST: 'vertical flatlist',
+};
 export default function SecondScreen(props) {
   const Focusable = FocusableItem(Text);
   return (
     <View style={{flex: 1}}>
       <View style={styles.innerViewStyle}>
         <Focusable
+          componentType={TYPE.BUTTON}
           focusId={'item-5'}
           screen={'screen-2'}
           focus={true}
@@ -21,6 +26,7 @@ export default function SecondScreen(props) {
         </Focusable>
 
         <Focusable
+          componentType={TYPE.BUTTON}
           focusId={'item-6'}
           screen={'screen-2'}
           focus={false}
@@ -34,6 +40,7 @@ export default function SecondScreen(props) {
       </View>
       <View style={styles.innerViewStyle}>
         <Focusable
+          componentType={TYPE.BUTTON}
           focusId={'item-7'}
           screen={'screen-2'}
           focus={true}
@@ -45,6 +52,7 @@ export default function SecondScreen(props) {
           text 7{' '}
         </Focusable>
         <Focusable
+          componentType={TYPE.BUTTON}
           focusId={'item-8'}
           screen={'screen-2'}
           focus={false}

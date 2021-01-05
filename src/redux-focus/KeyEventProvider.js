@@ -7,7 +7,8 @@ import KeyEvent, {
   KEYCODE_DPAD_UP,
 } from 'react-native-keyevent';
 import {connect} from 'react-redux';
-import {allScreensFocusDirection} from './FocusActions';
+import {allScreensFocusDirection, setDirectionInScreens} from './FocusActions';
+import {EventRegister} from 'react-native-event-listeners';
 export const KeyEventContext = React.createContext('DEFAULT');
 
 export function GetKeyEventProvider() {
@@ -36,12 +37,13 @@ function KeyEventProvider(props) {
               break;
             case KEYCODE_DPAD_DOWN:
               props.dispatchDirection(KEYCODE_DPAD_DOWN);
+
               break;
             default:
               break;
           }
         } else {
-          ///emitter
+          EventRegister.emit('key', keyEvent.keyCode);
         }
       });
     }
@@ -69,6 +71,8 @@ function KeyEventProvider(props) {
 }
 const dispatchDirection = (direc) => {
   return (dispatch) => {
+    console.log(direc);
+    // dispatch(setDirectionInScreens(direc));
     dispatch(allScreensFocusDirection(direc));
   };
 };

@@ -1,16 +1,25 @@
-import {KEYCODE_DPAD_CENTER} from 'react-native-keyevent';
 import {
   setFocus,
   setFocusDirection,
   setMapsDetails,
   setScreenDetails,
+  setDirectionInScreens,
 } from './FocusActions';
+import {
+  KEYCODE_DPAD_CENTER,
+  KEYCODE_DPAD_DOWN,
+  KEYCODE_DPAD_LEFT,
+  KEYCODE_DPAD_RIGHT,
+  KEYCODE_DPAD_UP,
+} from 'react-native-keyevent';
 import {findNextFocusElement} from './FocusLogic';
 import {Dimensions} from 'react-native';
 
 import cloneDeep from 'lodash/cloneDeep';
+
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
+
 const ALL_SCREENS_INITIAL_STATE = {
   allScreensArray: [],
 };
@@ -63,6 +72,7 @@ export const allScreensFocusReducer = (
       if (screen == null && remainingScreens.length > 0) {
         remainingScreens[remainingScreens.length - 1]['pressed'] = false;
       }
+
       const singleScreen = screenReducer(
         screen != null ? screen : SCREEN_INITIAL_STATE,
         setScreenDetails(
@@ -70,20 +80,28 @@ export const allScreensFocusReducer = (
           action.focusId,
           action.position,
           action.isFocus,
+          action.component,
         ),
       );
       const mergeInNewScreen = [...remainingScreens, singleScreen];
+
       return {
         allScreensArray: mergeInNewScreen,
       };
 
     case 'FOCUS_DIRECTION_IN_SCREEN':
+      const topScreen = state.allScreensArray[state.allScreensArray.length - 1];
+      const rS = state.allScreensArray.filter(
+        (obj) => obj.currentScreen != topScreen.currentScreen,
+      );
+
       const updatedWithDirection = screenReducer(
-        state.allScreensArray[state.allScreensArray.length - 1],
+        topScreen,
         setFocusDirection(action.direction),
       );
 
-      const result = [...state.allScreensArray, updatedWithDirection];
+      const result = [...rS, updatedWithDirection];
+
       return {
         allScreensArray: result,
       };
@@ -107,7 +125,7 @@ export const screenReducer = (state = SCREEN_INITIAL_STATE, action) => {
     case 'SET_SCREEN_DETAILS':
       const focusMap = mapsReducer(
         MAPS_INITIAL_STATE,
-        setMapsDetails(action.focusId, action.position),
+        setMapsDetails(action.focusId, action.position, action.component),
       );
 
       const screenDetailsObj = {
@@ -120,6 +138,7 @@ export const screenReducer = (state = SCREEN_INITIAL_STATE, action) => {
           ? Object.keys(state.focusMap[0])[0]
           : action.focusId,
         focusMap: [...state.focusMap, focusMap],
+        direction: action.direction ? action.direction : null,
       };
 
       return {
@@ -141,9 +160,11 @@ export const screenReducer = (state = SCREEN_INITIAL_STATE, action) => {
             WIDTH,
             HEIGHT,
           );
+
           return {
             ...state,
             currentFocusId: nextFocusId,
+            direction: action.direction,
           };
       }
     case 'SET_FOCUS':
@@ -151,6 +172,7 @@ export const screenReducer = (state = SCREEN_INITIAL_STATE, action) => {
         ...state,
         currentFocusId: action.focusId,
       };
+
     default:
       return state;
   }
@@ -161,6 +183,7 @@ export const mapsReducer = (state = MAPS_INITIAL_STATE, action) => {
     case 'SET_COMPONENT_DETAILS':
       const obj = {};
       obj[action.focusId] = action.position;
+      obj['componentType'] = action.component;
       return obj;
     default:
       return state;
